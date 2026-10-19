@@ -48,7 +48,7 @@ Copy-Item (Join-Path $repo 'licenses') $stage -Recurse
 
 # The installer and the update files.
 New-Item -ItemType Directory -Force $out | Out-Null
-& $vpk pack --packId $PackId --packVersion $Version --packDir $stage --mainExe 'Ryu Replay.exe' --packTitle 'Ryu Replay' --packAuthors 'Ryu Replay' `
+& $vpk pack --packId $PackId --packVersion $Version --packDir $stage --mainExe 'Ryu Replay.exe' --packTitle 'Ryu Replay' --packAuthors 'Ryu Replay' --runtime win-x64 `
     --icon (Join-Path $repo 'src\Ryu\app.ico') --shortcuts StartMenuRoot --framework vcredist145-x64 --releaseNotes $notes --outputDir $out
 if ($LASTEXITCODE -ne 0) { throw 'vpk pack failed' }
 # The release page carries the Setup only: no portable zip.
