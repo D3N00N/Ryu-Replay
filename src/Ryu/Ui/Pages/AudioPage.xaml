@@ -1,0 +1,191 @@
+<UserControl x:Class="Ryu.Ui.Pages.AudioPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="clr-namespace:Ryu.Ui">
+    <StackPanel>
+        <TextBlock Style="{StaticResource Title}" Text="{l:T nav.audio}"/>
+
+        <Border Style="{StaticResource Card}">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource Icon}" Text="&#xE767;" FontSize="18" Foreground="{DynamicResource Accent}" Margin="0,0,12,0"/>
+                    <TextBlock Grid.Column="1" Style="{StaticResource Section}" Text="{l:T audio.system}" VerticalAlignment="Center"/>
+                    <CheckBox Grid.Column="2" Style="{StaticResource Switch}" IsChecked="{Binding AudioSystem}" AutomationProperties.Name="{l:T audio.system}"/>
+                </Grid>
+                <l:LevelBar Channel="system" Margin="30,12,0,0" Visibility="{Binding AudioSystem, Converter={StaticResource Vis}}" AutomationProperties.Name="{l:T audio.level}"/>
+                <StackPanel IsEnabled="{Binding AudioSystem}" Margin="30,14,0,0">
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="320"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource Label}" Text="{l:T audio.device}"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Speakers}" DisplayMemberPath="Label" SelectedValuePath="Value"
+                                  SelectedValue="{Binding SystemDevice}" AutomationProperties.Name="{l:T audio.device}"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="272"/>
+                            <ColumnDefinition Width="48"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource Label}" Text="{l:T audio.volume}"/>
+                        <Slider Grid.Column="1" Minimum="0" Maximum="200" Value="{Binding SystemVolume}" IsSnapToTickEnabled="True" TickFrequency="5"
+                                VerticalAlignment="Center" AutomationProperties.Name="{l:T audio.volume}"/>
+                        <TextBlock Grid.Column="2" FlowDirection="LeftToRight" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <Run Text="{Binding SystemVolume, Mode=OneWay}"/><Run Text="%"/>
+                        </TextBlock>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <Border Style="{StaticResource Card}">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource CardTitle}" Text="{l:T audio.additional}" VerticalAlignment="Center"/>
+                    <Button Grid.Column="1" Style="{StaticResource Ghost}" Command="{Binding AddAudioSourceCommand}"
+                            Content="{l:T audio.addSource}" AutomationProperties.Name="{l:T audio.addSource}"/>
+                </Grid>
+                <ItemsControl ItemsSource="{Binding AudioSources}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="{DynamicResource Stroke}" BorderThickness="0,1,0,0" Margin="0,8,0,8" Padding="0,12,0,0">
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding Enabled}"
+                                                  AutomationProperties.Name="{l:T audio.additional}" Margin="0,0,12,0"/>
+                                        <ComboBox Grid.Column="1" ItemsSource="{Binding DataContext.AudioSourceDevices, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                  DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding Selection}"
+                                                  AutomationProperties.Name="{l:T audio.device}"/>
+                                        <Button Grid.Column="2" Style="{StaticResource Ghost}" Margin="8,0,0,0" Padding="10,6"
+                                                Content="{l:T audio.removeSource}"
+                                                Command="{Binding DataContext.RemoveAudioSourceCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                CommandParameter="{Binding}" AutomationProperties.Name="{l:T audio.removeSource}"/>
+                                    </Grid>
+                                    <l:LevelBar Channel="{Binding Id}" Margin="0,12,0,0"
+                                                Visibility="{Binding Enabled, Converter={StaticResource Vis}}"
+                                                AutomationProperties.Name="{l:T audio.level}"/>
+                                    <Grid Margin="0,14,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="160"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="272"/>
+                                            <ColumnDefinition Width="48"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Style="{StaticResource Label}" Text="{l:T audio.track}"/>
+                                        <ComboBox Grid.Column="1" ItemsSource="{Binding DataContext.AudioSourceTracks, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                  DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding Track}"
+                                                  IsEnabled="{Binding Enabled}" AutomationProperties.Name="{l:T audio.track}"/>
+                                        <TextBlock Grid.Column="2" Style="{StaticResource Label}" Text="{l:T audio.volume}" Margin="12,0,12,0"/>
+                                        <Slider Grid.Column="3" Minimum="0" Maximum="2" Value="{Binding Volume, UpdateSourceTrigger=PropertyChanged}"
+                                                IsSnapToTickEnabled="True" TickFrequency="0.05" VerticalAlignment="Center" IsEnabled="{Binding Enabled}"
+                                                AutomationProperties.Name="{l:T audio.volume}"/>
+                                        <TextBlock Grid.Column="4" FlowDirection="LeftToRight" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                            <Run Text="{Binding Volume, Mode=OneWay, StringFormat={}{0:P0}}"/>
+                                        </TextBlock>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <TextBlock Style="{StaticResource Caption}" Text="{l:T audio.sourceTip}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <Border Style="{StaticResource Card}">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource Icon}" Text="&#xE720;" FontSize="18" Foreground="{DynamicResource Accent}" Margin="0,0,12,0"/>
+                    <TextBlock Grid.Column="1" Style="{StaticResource Section}" Text="{l:T audio.mic}" VerticalAlignment="Center"/>
+                    <CheckBox Grid.Column="2" Style="{StaticResource Switch}" IsChecked="{Binding Mic}" AutomationProperties.Name="{l:T audio.mic}"/>
+                </Grid>
+                <l:LevelBar Channel="mic" Margin="30,12,0,0" Visibility="{Binding Mic, Converter={StaticResource Vis}}" AutomationProperties.Name="{l:T audio.level}"/>
+                <StackPanel Margin="30,14,0,0">
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="320"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource Label}" Text="{l:T audio.device}"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Mics}" DisplayMemberPath="Label" SelectedValuePath="Value"
+                                  SelectedValue="{Binding MicDevice}" AutomationProperties.Name="{l:T audio.device}"/>
+                    </Grid>
+                    <Grid IsEnabled="{Binding Mic}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="272"/>
+                            <ColumnDefinition Width="48"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource Label}" Text="{l:T audio.volume}"/>
+                        <Slider Grid.Column="1" Minimum="0" Maximum="200" Value="{Binding MicVolume}" IsSnapToTickEnabled="True" TickFrequency="5"
+                                VerticalAlignment="Center" AutomationProperties.Name="{l:T audio.volume}"/>
+                        <TextBlock Grid.Column="2" FlowDirection="LeftToRight" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <Run Text="{Binding MicVolume, Mode=OneWay}"/><Run Text="%"/>
+                        </TextBlock>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <Border Style="{StaticResource Card}">
+            <StackPanel>
+                <TextBlock Style="{StaticResource CardTitle}" Text="{l:T audio.cardOptions}"/>
+                <Grid ToolTip="{l:T audio.separateTip}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="0,0,16,0">
+                        <TextBlock Style="{StaticResource Label}" Text="{l:T audio.separate}"/>
+                        <TextBlock Style="{StaticResource Caption}" Text="{l:T audio.separateTip}"/>
+                    </StackPanel>
+                    <CheckBox Grid.Column="1" Style="{StaticResource Switch}" IsChecked="{Binding SeparateTracks}" AutomationProperties.Name="{l:T audio.separate}"/>
+                </Grid>
+                <Border Style="{StaticResource Divider}"/>
+                <Grid IsEnabled="{Binding SourceAudioPossible}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="0,0,16,0">
+                        <TextBlock Style="{StaticResource Label}" Text="{l:T audio.sourceOnly}"/>
+                        <TextBlock Style="{StaticResource Caption}" Text="{l:T audio.sourceOnlyTip}"/>
+                    </StackPanel>
+                    <CheckBox Grid.Column="1" Style="{StaticResource Switch}" IsChecked="{Binding SourceAudioOnly}" AutomationProperties.Name="{l:T audio.sourceOnly}"/>
+                </Grid>
+                <Border Style="{StaticResource Divider}"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="140"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource Label}" Text="{l:T audio.bitrate}"/>
+                    <ComboBox Grid.Column="1" ItemsSource="{Binding AudioBitrates}" DisplayMemberPath="Label" SelectedValuePath="Value"
+                              SelectedValue="{Binding AudioBitrate}" AutomationProperties.Name="{l:T audio.bitrate}"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>
