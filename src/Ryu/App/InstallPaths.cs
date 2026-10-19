@@ -7,7 +7,7 @@ namespace Ryu.App;
 
 /// <summary>
 /// The installed Ryu: Velopack's folder (%LocalAppData%\Ryu), with the program in current\ beside Update.exe and
-/// a small stub Ryu.exe at the top that always starts the current version. A development build is not installed.
+/// a small stub Ryu Replay.exe at the top that always starts the current version. A development build is not installed.
 /// </summary>
 public static class InstallPaths
 {
@@ -17,7 +17,7 @@ public static class InstallPaths
     /// <summary>What the Start menu, autostart and restarts launch: the stub when installed, else this exe.</summary>
     public static string LaunchExe => Root is { } root ? StubFor(root) : Environment.ProcessPath!;
 
-    /// <summary>The install folder of <paramref name="exePath"/> (…\current\Ryu.exe beside Update.exe), or null.</summary>
+    /// <summary>The install folder of <paramref name="exePath"/> (…\current\Ryu Replay.exe beside Update.exe), or null.</summary>
     public static string? RootFor(string exePath)
     {
         string? folder = Path.GetDirectoryName(Path.GetFullPath(exePath));
@@ -26,7 +26,7 @@ public static class InstallPaths
             && File.Exists(Path.Combine(root, "Update.exe")) ? root : null;
     }
 
-    public static string StubFor(string root) => Path.Combine(root, AppInfo.Name + ".exe");
+    public static string StubFor(string root) => Path.Combine(root, AppInfo.ExeName + ".exe");
 
     /// <summary><paramref name="path"/> is <paramref name="root"/> or a folder in it (any case, trailing slashes ignored).</summary>
     public static bool IsInside(string root, string path)
@@ -79,7 +79,7 @@ public static class InstallPaths
 
     static List<int> Own(string root)
     {
-        var all = Process.GetProcessesByName(AppInfo.Name);
+        var all = Process.GetProcessesByName(AppInfo.ExeName);
         try
         {
             return OwnProcesses(root, all.Select(p => (p.Id, ForegroundApp.ImagePath(p.Id))), Environment.ProcessId).ToList();

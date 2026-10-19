@@ -6,7 +6,10 @@ namespace Ryu;
 /// <summary>Every name the app registers with Windows, in one place so a rename is a single edit.</summary>
 public static class AppInfo
 {
+    /// <summary>Stable internal id used for settings, IPC, update channels, and the existing install folder.</summary>
     public const string Name = "Ryu";
+    /// <summary>The executable and the user-facing Windows application name.</summary>
+    public const string ExeName = "Ryu Replay";
     public const string EngineMutex = @"Local\Ryu.Engine";
     public const string SettingsMutex = @"Local\Ryu.Settings";
     public const string SettingsShowEvent = @"Local\Ryu.Settings.Show";

@@ -34,7 +34,7 @@ public static class InstallPathsTests
     {
         var running = new (int Id, string? Path)[]
         {
-            (1, @"C:\L\Ryu\current\Ryu.exe"), (2, @"D:\Ryu\bin\64bit\Ryu.exe"), (3, null), (9, @"C:\L\Ryu\current\Ryu.exe"),
+            (1, @"C:\L\Ryu\current\Ryu Replay.exe"), (2, @"D:\Ryu\bin\64bit\Ryu.exe"), (3, null), (9, @"C:\L\Ryu\current\Ryu Replay.exe"),
         };
         Assert.Equal("1", string.Join(",", InstallPaths.OwnProcesses(@"C:\L\Ryu", running, self: 9)), "this install's, not itself, not another copy");
     }
@@ -43,7 +43,7 @@ public static class InstallPathsTests
     [Test]
     public static void Uninstall_removes_only_its_own_autostart()
     {
-        Assert.True(Autostart.PointsInto("\"C:\\L\\Ryu\\Ryu.exe\" --background", @"C:\L\Ryu"), "this install's stub");
+        Assert.True(Autostart.PointsInto("\"C:\\L\\Ryu\\Ryu Replay.exe\" --background", @"C:\L\Ryu"), "this install's stub");
         Assert.True(!Autostart.PointsInto("\"D:\\Ryu\\bin\\64bit\\Ryu.exe\" --background", @"C:\L\Ryu"), "another copy");
         Assert.True(!Autostart.PointsInto(null, @"C:\L\Ryu"), "none");
     }
@@ -56,12 +56,12 @@ public static class InstallPathsTests
         try
         {
             Directory.CreateDirectory(Path.Combine(root, "current"));
-            string exe = Path.Combine(root, "current", "Ryu.exe");
+            string exe = Path.Combine(root, "current", "Ryu Replay.exe");
             Assert.Equal(null, InstallPaths.RootFor(exe), "no Update.exe: not installed");
             File.WriteAllBytes(Path.Combine(root, "Update.exe"), []);
             Assert.Equal(root, InstallPaths.RootFor(exe), "installed");
-            Assert.Equal(Path.Combine(root, "Ryu.exe"), InstallPaths.StubFor(root), "Start menu and autostart point at the stub");
-            Assert.Equal(null, InstallPaths.RootFor(Path.Combine(root, "Ryu.exe")), "the stub itself is not the program");
+            Assert.Equal(Path.Combine(root, "Ryu Replay.exe"), InstallPaths.StubFor(root), "Start menu and autostart point at the stub");
+            Assert.Equal(null, InstallPaths.RootFor(Path.Combine(root, "Ryu Replay.exe")), "the stub itself is not the program");
         }
         finally
         {

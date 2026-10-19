@@ -39,6 +39,8 @@ $obsVersion = (Get-Content (Join-Path $stage 'libobs-version.txt')).Trim()
 if ($obsVersion -ne $ExpectedObs) { throw "Installed OBS is $obsVersion, expected $ExpectedObs (pass -ExpectedObs after re-testing)" }
 dotnet publish (Join-Path $repo 'src\Ryu') -c Release -o $stage --self-contained true "-p:Version=$Version" --nologo -v quiet
 if ($LASTEXITCODE -ne 0) { throw 'dotnet publish failed' }
+# The Windows display name is also the executable name used by the Velopack stub and installer.
+Copy-Item (Join-Path $stage 'Ryu.exe') (Join-Path $stage 'Ryu Replay.exe') -Force
 # Debug symbols and import libraries are only for developers.
 Get-ChildItem $stage -File | Where-Object { $_.Extension -in '.pdb', '.lib', '.xml' } | Remove-Item
 foreach ($f in 'LICENSE', 'THIRD-PARTY-NOTICES.md') { Copy-Item (Join-Path $repo $f) $stage }
@@ -46,7 +48,7 @@ Copy-Item (Join-Path $repo 'licenses') $stage -Recurse
 
 # The installer and the update files.
 New-Item -ItemType Directory -Force $out | Out-Null
-& $vpk pack --packId $PackId --packVersion $Version --packDir $stage --mainExe Ryu.exe --packTitle $PackId --packAuthors Ryu `
+& $vpk pack --packId $PackId --packVersion $Version --packDir $stage --mainExe 'Ryu Replay.exe' --packTitle 'Ryu Replay' --packAuthors 'Ryu Replay' `
     --icon (Join-Path $repo 'src\Ryu\app.ico') --shortcuts StartMenuRoot --framework vcredist145-x64 --releaseNotes $notes --outputDir $out
 if ($LASTEXITCODE -ne 0) { throw 'vpk pack failed' }
 # The release page carries the Setup only: no portable zip.

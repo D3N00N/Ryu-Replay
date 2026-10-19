@@ -19,9 +19,9 @@
     <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..'))=/_/</PathMap>
     <AssemblyName>Ryu</AssemblyName>
     <RootNamespace>Ryu</RootNamespace>
-    <Version>1.0.1</Version>
-    <AssemblyTitle>Ryu</AssemblyTitle>
-    <Product>Ryu</Product>
+    <Version>1.0.2</Version>
+    <AssemblyTitle>Ryu Replay</AssemblyTitle>
+    <Product>Ryu Replay</Product>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <ApplicationIcon>app.ico</ApplicationIcon>
     <!-- Library IntelliSense files (WebView2 ships ~0.8 MB of them) are for developers, not users. -->

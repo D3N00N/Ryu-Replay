@@ -12,6 +12,12 @@
 #ifndef PackId
   #define PackId "Ryu"
 #endif
+#ifndef ProductName
+  #define ProductName "Ryu Replay"
+#endif
+#ifndef MainExe
+  #define MainExe "Ryu Replay.exe"
+#endif
 #ifndef OutDir
   #define OutDir "..\releases"
 #endif
@@ -19,10 +25,10 @@
 
 [Setup]
 AppId={#PackId}.Wizard
-AppName={#PackId}
+AppName={#ProductName}
 AppVersion={#AppVersion}
-AppVerName={#PackId} {#AppVersion}
-AppPublisher=Ryu
+AppVerName={#ProductName} {#AppVersion}
+AppPublisher=Ryu Replay
 AppPublisherURL=https://github.com/D3N00N/Ryu-Replay
 DefaultDirName={code:DefaultDir}
 UsePreviousAppDir=no
@@ -63,34 +69,34 @@ ru.LangCode=ru
 es.LangCode=es
 ptBR.LangCode=pt-BR
 de.LangCode=de
-en.StartWithWindows=Start Ryu with Windows, so instant replay is ready when you play
-ar.StartWithWindows=تشغيل Ryu مع بدء ويندوز، لتكون الإعادة الفورية جاهزة حين تلعب
-zhHans.StartWithWindows=随 Windows 启动 Ryu，玩游戏时即时回放已就绪
-ru.StartWithWindows=Запускать Ryu вместе с Windows, чтобы мгновенный повтор был готов, когда вы играете
-es.StartWithWindows=Iniciar Ryu con Windows, para que la repetición instantánea esté lista cuando juegues
-ptBR.StartWithWindows=Iniciar o Ryu com o Windows, para o replay instantâneo estar pronto quando você jogar
-de.StartWithWindows=Ryu mit Windows starten, damit Instant Replay beim Spielen bereit ist
-en.InstallingApp=Installing Ryu…
-ar.InstallingApp=جارٍ تثبيت Ryu…
-zhHans.InstallingApp=正在安装 Ryu…
-ru.InstallingApp=Установка Ryu…
-es.InstallingApp=Instalando Ryu…
-ptBR.InstallingApp=Instalando o Ryu…
-de.InstallingApp=Ryu wird installiert…
-en.RyuRunning=Ryu is running. Quit it first (right-click its icon by the clock, then Exit), then choose Retry.
-ar.RyuRunning=يعمل Ryu الآن. أغلقه أولًا (انقر بزر الفأرة الأيمن على أيقونته بجوار الساعة، ثم «خروج»)، ثم اختر «إعادة المحاولة».
-zhHans.RyuRunning=Ryu 正在运行。请先退出它（右键单击时钟旁的图标，然后选择“退出”），再选择“重试”。
-ru.RyuRunning=Ryu запущен. Сначала закройте его (щёлкните правой кнопкой по его значку у часов и выберите «Выход»), затем нажмите «Повтор».
-es.RyuRunning=Ryu está abierto. Ciérralo primero (clic derecho en su icono junto al reloj y luego «Salir») y después elige Reintentar.
-ptBR.RyuRunning=O Ryu está aberto. Feche-o primeiro (clique com o botão direito no ícone ao lado do relógio e depois em «Sair») e escolha Repetir.
-de.RyuRunning=Ryu läuft. Beende es zuerst (Rechtsklick auf sein Symbol neben der Uhr, dann „Beenden“) und wähle dann Wiederholen.
-en.InstallFailed=Ryu could not be installed (error %1). Please try again.
-ar.InstallFailed=تعذّر تثبيت Ryu (الخطأ %1). يُرجى المحاولة مرة أخرى.
-zhHans.InstallFailed=无法安装 Ryu（错误 %1）。请重试。
-ru.InstallFailed=Не удалось установить Ryu (ошибка %1). Попробуйте ещё раз.
-es.InstallFailed=No se pudo instalar Ryu (error %1). Inténtalo de nuevo.
-ptBR.InstallFailed=Não foi possível instalar o Ryu (erro %1). Tente novamente.
-de.InstallFailed=Ryu konnte nicht installiert werden (Fehler %1). Bitte versuche es erneut.
+en.StartWithWindows=Start Ryu Replay with Windows, so instant replay is ready when you play
+ar.StartWithWindows=تشغيل Ryu Replay مع بدء ويندوز، لتكون الإعادة الفورية جاهزة حين تلعب
+zhHans.StartWithWindows=随 Windows 启动 Ryu Replay，玩游戏时即时回放已就绪
+ru.StartWithWindows=Запускать Ryu Replay вместе с Windows, чтобы мгновенный повтор был готов, когда вы играете
+es.StartWithWindows=Iniciar Ryu Replay con Windows, para que la repetición instantánea esté lista cuando juegues
+ptBR.StartWithWindows=Iniciar o Ryu Replay com o Windows, para o replay instantâneo estar pronto quando você jogar
+de.StartWithWindows=Ryu Replay mit Windows starten, damit Instant Replay beim Spielen bereit ist
+en.InstallingApp=Installing Ryu Replay…
+ar.InstallingApp=جارٍ تثبيت Ryu Replay…
+zhHans.InstallingApp=正在安装 Ryu Replay…
+ru.InstallingApp=Установка Ryu Replay…
+es.InstallingApp=Instalando Ryu Replay…
+ptBR.InstallingApp=Instalando o Ryu Replay…
+de.InstallingApp=Ryu Replay wird installiert…
+en.RyuRunning=Ryu Replay is running. Quit it first (right-click its icon by the clock, then Exit), then choose Retry.
+ar.RyuRunning=يعمل Ryu Replay الآن. أغلقه أولًا (انقر بزر الفأرة الأيمن على أيقونته بجوار الساعة، ثم «خروج»)، ثم اختر «إعادة المحاولة».
+zhHans.RyuRunning=Ryu Replay 正在运行。请先退出它（右键单击时钟旁的图标，然后选择“退出”），再选择“重试”。
+ru.RyuRunning=Ryu Replay запущен. Сначала закройте его (щёлкните правой кнопкой по его значку у часов и выберите «Выход»), затем нажмите «Повтор».
+es.RyuRunning=Ryu Replay está abierto. Ciérralo primero (clic derecho en su icono junto al reloj y luego «Salir») y después elige Reintentar.
+ptBR.RyuRunning=O Ryu Replay está aberto. Feche-o primeiro (clique com o botão direito no ícone ao lado do relógio e depois em «Sair») e escolha Repetir.
+de.RyuRunning=Ryu Replay läuft. Beende es zuerst (Rechtsklick auf sein Symbol neben der Uhr, dann „Beenden“) und wähle dann Wiederholen.
+en.InstallFailed=Ryu Replay could not be installed (error %1). Please try again.
+ar.InstallFailed=تعذّر تثبيت Ryu Replay (الخطأ %1). يُرجى المحاولة مرة أخرى.
+zhHans.InstallFailed=无法安装 Ryu Replay（错误 %1）。请重试。
+ru.InstallFailed=Не удалось установить Ryu Replay (ошибка %1). Попробуйте ещё раз.
+es.InstallFailed=No se pudo instalar Ryu Replay (error %1). Inténtalo de nuevo.
+ptBR.InstallFailed=Não foi possível instalar o Ryu Replay (erro %1). Tente novamente.
+de.InstallFailed=Ryu Replay konnte nicht installiert werden (Fehler %1). Bitte versuche es erneut.
 en.FolderNotEmpty=Please choose an empty or new folder. Uninstalling Ryu removes its whole folder, so it must not share one with other files.
 ar.FolderNotEmpty=يُرجى اختيار مجلد فارغ أو جديد. إزالة Ryu تحذف مجلده كاملًا، لذا يجب ألا يحوي ملفات أخرى.
 zhHans.FolderNotEmpty=请选择一个空文件夹或新文件夹。卸载 Ryu 会删除其整个文件夹，因此该文件夹不能包含其他文件。
@@ -116,17 +122,17 @@ Source: "{#VeloSetup}"; DestName: "{#PackId}-win-Setup.exe"; Flags: dontcopy
 
 [Icons]
 ; Velopack's uninstaller removes every shortcut that points into the install folder, this one too.
-Name: "{userdesktop}\{#PackId}"; Filename: "{app}\{#PackId}.exe"; Tasks: desktopicon
+Name: "{userdesktop}\{#ProductName}"; Filename: "{app}\{#MainExe}"; Tasks: desktopicon
 
 [Registry]
 ; The same entry Ryu keeps in step with its setting (Autostart.CommandFor, AppInfo.RunValueName): the wizard writes
 ; the first one, or clears an old one, for when Ryu is not started from the last page.
-; {#PackId}.exe is Velopack's launcher at the top of the install folder (named after the package).
-Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "{#PackId}"; ValueData: """{app}\{#PackId}.exe"" --background"; Tasks: autostart
+; {#MainExe} is Velopack's launcher at the top of the install folder.
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "{#PackId}"; ValueData: """{app}\{#MainExe}"" --background"; Tasks: autostart
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: none; ValueName: "{#PackId}"; Flags: deletevalue; Tasks: not autostart
 
 [Run]
-Filename: "{app}\{#PackId}.exe"; Description: "{cm:LaunchProgram,{#PackId}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#MainExe}"; Description: "{cm:LaunchProgram,{#ProductName}}"; Flags: nowait postinstall skipifsilent
 
 [Code]
 { Message boxes are suppressible: a silent install (/VERYSILENT /SUPPRESSMSGBOXES) never shows one, it takes the default. }
@@ -223,7 +229,7 @@ begin
   try
     Locator := CreateOleObject('WbemScripting.SWbemLocator');
     Service := Locator.ConnectServer('.', 'root\CIMV2');
-    Found := Service.ExecQuery('SELECT ExecutablePath FROM Win32_Process WHERE Name = ''Ryu.exe''');
+    Found := Service.ExecQuery('SELECT ExecutablePath FROM Win32_Process WHERE Name = ''Ryu Replay.exe''');
     for I := 0 to Found.Count - 1 do
     begin
       Item := Found.ItemIndex(I);
