@@ -452,6 +452,8 @@
   "viewer.mute": "Stumm",
   "viewer.unmute": "Ton an",
   "viewer.close": "Schließen",
+  "fullscreen.enter": "Vollbild",
+  "fullscreen.exit": "Vollbild beenden",
   "voice.shotPhrase": "Screenshot-Satz",
   "voice.shotNone": "Noch kein Screenshot-Satz",
   "voice.shotNoneTip": "Ein zweiter Satz für Screenshots, z. B. „Screenshot machen“",

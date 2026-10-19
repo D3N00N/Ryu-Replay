@@ -78,7 +78,7 @@
         <Border Grid.RowSpan="2" Background="{DynamicResource GlassSidebar}" BorderBrush="{DynamicResource Stroke}" BorderThickness="0,0,1,0"/>
         <Border Grid.Column="1" Grid.RowSpan="2" Background="{DynamicResource GlassBackground}" IsHitTestVisible="False"/>
         <Border Grid.RowSpan="2" Grid.ColumnSpan="2" Background="{DynamicResource GlassSheen}" IsHitTestVisible="False"/>
-        <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+        <StackPanel x:Name="BrandHeader" Orientation="Horizontal" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center"
                     AutomationProperties.Name="{l:T app}">
             <Image x:Name="BrandLogo" Source="/Ryu;component/Ui/Assets/ryu-logo.png"
                    Width="{DynamicResource BrandLogoWidth}" Height="{DynamicResource BrandLogoHeight}"
@@ -88,11 +88,19 @@
         </StackPanel>
 
         <!-- Window buttons (above the share panel's dimmed backdrop, so the window can always be closed) -->
-        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Panel.ZIndex="20">
+        <StackPanel x:Name="WindowButtons" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Panel.ZIndex="20">
             <Button Style="{StaticResource Caption}" Content="&#xE921;" Click="OnMinimize" AutomationProperties.Name="Minimize"/>
             <Button x:Name="MaxButton" Style="{StaticResource Caption}" Content="&#xE922;" Click="OnMaximize" AutomationProperties.Name="Maximize"/>
+            <Button x:Name="FullScreenButton" Style="{StaticResource Caption}" Content="&#xE740;" Click="OnFullScreen"
+                    ToolTip="{l:T fullscreen.enter}" AutomationProperties.Name="{l:T fullscreen.enter}"/>
             <Button Style="{StaticResource CaptionClose}" Content="&#xE8BB;" Click="OnClose" AutomationProperties.Name="Close"/>
         </StackPanel>
+
+        <!-- A small exit control stays available after the title bar is hidden. -->
+        <Button x:Name="ExitFullScreenButton" Grid.RowSpan="2" Grid.Column="1" Panel.ZIndex="30"
+                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Style="{StaticResource Caption}"
+                Content="&#xE73F;" Click="OnFullScreen" Visibility="Collapsed"
+                ToolTip="{l:T fullscreen.exit}" AutomationProperties.Name="{l:T fullscreen.exit}"/>
 
         <StackPanel x:Name="Nav" Grid.Row="1" Margin="{DynamicResource NavMargin}">
             <RadioButton Style="{StaticResource Nav}" GroupName="nav" Tag="&#xE9D9;" Content="{l:T nav.status}" x:Name="NavStatus" IsChecked="True"/>

@@ -452,6 +452,8 @@
   "viewer.mute": "Mute",
   "viewer.unmute": "Unmute",
   "viewer.close": "Close",
+  "fullscreen.enter": "Enter full screen",
+  "fullscreen.exit": "Exit full screen",
   "voice.shotPhrase": "Screenshot phrase",
   "voice.shotNone": "No screenshot phrase yet",
   "voice.shotNoneTip": "A second phrase for screenshots, like “snap that”",

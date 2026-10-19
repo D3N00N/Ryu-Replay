@@ -452,6 +452,8 @@
   "viewer.mute": "Silenciar",
   "viewer.unmute": "Ativar som",
   "viewer.close": "Fechar",
+  "fullscreen.enter": "Tela cheia",
+  "fullscreen.exit": "Sair da tela cheia",
   "voice.shotPhrase": "Frase da captura",
   "voice.shotNone": "Nenhuma frase de captura ainda",
   "voice.shotNoneTip": "Uma segunda frase para capturas, como “tira um print”",

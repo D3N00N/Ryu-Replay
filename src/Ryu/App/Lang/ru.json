@@ -457,6 +457,8 @@
   "viewer.mute": "Без звука",
   "viewer.unmute": "Включить звук",
   "viewer.close": "Закрыть",
+  "fullscreen.enter": "Полный экран",
+  "fullscreen.exit": "Выйти из полноэкранного режима",
   "voice.shotPhrase": "Фраза для скриншота",
   "voice.shotNone": "Фразы для скриншота пока нет",
   "voice.shotNoneTip": "Вторая фраза для скриншотов, например «сделай скрин»",

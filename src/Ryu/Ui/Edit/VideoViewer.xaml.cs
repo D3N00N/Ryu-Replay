@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Automation;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Ryu.App;
@@ -23,7 +24,7 @@ public partial class VideoViewer : UserControl
     ClipItem? _item;
     FrameGrabber? _grabber;
     double _duration, _aspect = 16 / 9.0, _position;
-    bool _dragging, _resumeAfterDrag, _settingSeek, _muted;
+    bool _dragging, _resumeAfterDrag, _settingSeek, _muted, _isFullScreen, _ownsFullScreen;
 
     public VideoViewer()
     {
@@ -33,6 +34,7 @@ public partial class VideoViewer : UserControl
     }
 
     public event Action<ClipItem>? ShareRequested, ShowRequested, DeleteRequested, EditRequested;
+    public event Action<bool>? FullScreenRequested;
 
     public bool IsOpen => _item != null;
 
@@ -53,7 +55,8 @@ public partial class VideoViewer : UserControl
         }
         catch (Exception e) when (e is ShareException or IOException or InvalidOperationException)
         {
-            // FFmpeg or the file is missing: the viewer still opens, with its buttons and the card's picture.
+            // Keep the viewer open and explain why the preview could not be prepared.
+            Meta.Text = string.IsNullOrWhiteSpace(item.Meta) ? e.Message : $"{item.Meta}  ·  {e.Message}";
         }
         Video.Source = Still(0) ?? item.Thumbnail;
         _settingSeek = true;
@@ -68,6 +71,11 @@ public partial class VideoViewer : UserControl
 
     public void Hide()
     {
+        if (_ownsFullScreen)
+        {
+            _ownsFullScreen = false;
+            FullScreenRequested?.Invoke(false);
+        }
         _session.Stop();
         _grabber?.Dispose();
         _grabber = null;
@@ -75,6 +83,27 @@ public partial class VideoViewer : UserControl
         Video.Source = null; // lets go of the clip (it may be deleted next)
         ShowPlaying(false);
         Visibility = Visibility.Collapsed;
+    }
+
+    /// <summary>Adapts the viewer to the main window's immersive full-screen mode.</summary>
+    public void SetFullScreen(bool fullScreen)
+    {
+        _isFullScreen = fullScreen;
+        if (!fullScreen)
+            _ownsFullScreen = false;
+        HeaderBar.Visibility = ActionBar.Visibility = fullScreen ? Visibility.Collapsed : Visibility.Visible;
+        Grid.SetRowSpan(VideoBorder, 1);
+        ControlBar.Visibility = fullScreen ? Visibility.Collapsed : Visibility.Visible;
+        VideoBorder.Margin = fullScreen ? new Thickness(0) : new Thickness(28, 0, 28, 0);
+        VideoBorder.HorizontalAlignment = fullScreen ? HorizontalAlignment.Stretch : HorizontalAlignment.Center;
+        VideoBorder.VerticalAlignment = fullScreen ? VerticalAlignment.Stretch : VerticalAlignment.Center;
+        VideoBorder.CornerRadius = fullScreen ? new CornerRadius(0) : new CornerRadius(10);
+        VideoBorder.BorderThickness = fullScreen ? new Thickness(0) : new Thickness(1);
+        Scrim.Background = fullScreen ? Brushes.Black : new SolidColorBrush(Color.FromArgb(0xE0, 0x1A, 0x15, 0x14));
+        FullScreenIcon.Text = fullScreen ? "\uE73F" : "\uE740";
+        string label = Text.Get(fullScreen ? "fullscreen.exit" : "fullscreen.enter");
+        FullScreenButton.ToolTip = label;
+        AutomationProperties.SetName(FullScreenButton, label);
     }
 
     BitmapSource? Still(double seconds)
@@ -200,7 +229,13 @@ public partial class VideoViewer : UserControl
         switch (e.Key)
         {
             case Key.Escape:
-                Hide();
+                if (_isFullScreen)
+                    FullScreenRequested?.Invoke(false);
+                else
+                    Hide();
+                break;
+            case Key.F:
+                FullScreenRequested?.Invoke(!_isFullScreen);
                 break;
             case Key.Space:
                 TogglePlay();
@@ -233,6 +268,12 @@ public partial class VideoViewer : UserControl
     void OnPlay(object sender, RoutedEventArgs e) => TogglePlay();
 
     void OnMute(object sender, RoutedEventArgs e) => ShowMuted(!_muted);
+
+    void OnFullScreen(object sender, RoutedEventArgs e)
+    {
+        _ownsFullScreen = !_isFullScreen;
+        FullScreenRequested?.Invoke(_ownsFullScreen);
+    }
 
     void OnClose(object sender, RoutedEventArgs e) => Hide();
 

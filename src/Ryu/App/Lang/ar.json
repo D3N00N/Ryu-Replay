@@ -467,6 +467,8 @@
   "viewer.mute": "كتم",
   "viewer.unmute": "إلغاء الكتم",
   "viewer.close": "إغلاق",
+  "fullscreen.enter": "ملء الشاشة",
+  "fullscreen.exit": "الخروج من ملء الشاشة",
   "voice.shotPhrase": "عبارة لقطة الشاشة",
   "voice.shotNone": "لم تسجّل عبارة للقطات الشاشة بعد",
   "voice.shotNoneTip": "عبارة ثانية لالتقاط الشاشة، مثل «صوّر»",

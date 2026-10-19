@@ -447,6 +447,8 @@
   "viewer.mute": "静音",
   "viewer.unmute": "取消静音",
   "viewer.close": "关闭",
+  "fullscreen.enter": "全屏",
+  "fullscreen.exit": "退出全屏",
   "voice.shotPhrase": "截图口令",
   "voice.shotNone": "还没有截图口令",
   "voice.shotNoneTip": "用于截图的第二个口令，例如“截个图”",

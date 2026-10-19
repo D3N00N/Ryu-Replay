@@ -19,7 +19,7 @@
     <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..'))=/_/</PathMap>
     <AssemblyName>Ryu</AssemblyName>
     <RootNamespace>Ryu</RootNamespace>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <AssemblyTitle>Ryu Replay</AssemblyTitle>
     <Product>Ryu Replay</Product>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>

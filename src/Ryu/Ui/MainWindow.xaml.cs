@@ -1,5 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Shell;
 using System.Windows.Threading;
 using Ryu.App;
 using Ryu.Ui.Pages;
@@ -15,6 +17,14 @@ public partial class MainWindow : Window
     readonly Dictionary<string, Func<FrameworkElement>> _pages;
     ClipsPage? _clipsPage;
     string? _current;
+    bool _fullScreen;
+    bool _savedTopmost;
+    WindowStyle _savedWindowStyle;
+    ResizeMode _savedResizeMode;
+    double _savedMaxWidth;
+    WindowState _savedWindowState;
+    Rect _savedWindowBounds;
+    WindowChrome? _savedWindowChrome;
 
     /// <param name="shareHost">Replaces the real FFmpeg/clipboard/browser link (used by --render).</param>
     /// <param name="accountsHost">Replaces the site sign-ins in Ryu's browser profile (used by --render).</param>
@@ -57,6 +67,7 @@ public partial class MainWindow : Window
         PictureLayer.Neighbor = _clips.NextPicture;
         // Videos play in Ryu's own player (with Edit)
         _clips.VideoRequested += clip => VideoLayer.Show(clip);
+        VideoLayer.FullScreenRequested += SetFullScreen;
         VideoLayer.ShareRequested += clip => _share.Open(clip.Path, clip.Thumbnail);
         VideoLayer.ShowRequested += clip => _clips.ShowCommand.Execute(clip);
         VideoLayer.DeleteRequested += clip => _clips.DeleteCommand.Execute(clip);
@@ -137,6 +148,92 @@ public partial class MainWindow : Window
     void OnMaximize(object sender, RoutedEventArgs e) =>
         WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
 
+    void OnFullScreen(object sender, RoutedEventArgs e) => SetFullScreen(!_fullScreen);
+
+    void SetFullScreen(bool fullScreen)
+    {
+        if (_fullScreen == fullScreen)
+        {
+            VideoLayer.SetFullScreen(fullScreen);
+            return;
+        }
+
+        if (fullScreen)
+        {
+            _savedWindowStyle = WindowStyle;
+            _savedResizeMode = ResizeMode;
+            _savedWindowState = WindowState;
+            _savedWindowBounds = RestoreBounds;
+            _savedWindowChrome = WindowChrome.GetWindowChrome(this);
+            _savedTopmost = Topmost;
+            _savedMaxWidth = MaxWidth;
+
+            WindowState = WindowState.Normal;
+            WindowChrome.SetWindowChrome(this, null);
+            WindowStyle = WindowStyle.None;
+            ResizeMode = ResizeMode.NoResize;
+            MaxWidth = double.PositiveInfinity;
+            Root.RowDefinitions[0].Height = new GridLength(0);
+            BrandHeader.Visibility = Visibility.Collapsed;
+            WindowButtons.Visibility = Visibility.Collapsed;
+            ExitFullScreenButton.Visibility = Visibility.Visible;
+            Topmost = true;
+            _fullScreen = true;
+            PlaceOverMonitor();
+        }
+        else
+        {
+            WindowState = WindowState.Normal;
+            Topmost = _savedTopmost;
+            WindowChrome.SetWindowChrome(this, _savedWindowChrome);
+            WindowStyle = _savedWindowStyle;
+            ResizeMode = _savedResizeMode;
+            MaxWidth = _savedMaxWidth;
+            Root.RowDefinitions[0].Height = new GridLength(50);
+            BrandHeader.Visibility = Visibility.Visible;
+            WindowButtons.Visibility = Visibility.Visible;
+            ExitFullScreenButton.Visibility = Visibility.Collapsed;
+            _fullScreen = false;
+
+            if (_savedWindowState == WindowState.Normal && !_savedWindowBounds.IsEmpty)
+            {
+                Left = _savedWindowBounds.Left;
+                Top = _savedWindowBounds.Top;
+                Width = _savedWindowBounds.Width;
+                Height = _savedWindowBounds.Height;
+            }
+            WindowState = _savedWindowState == WindowState.Minimized ? WindowState.Normal : _savedWindowState;
+        }
+
+        VideoLayer.SetFullScreen(fullScreen);
+    }
+
+    /// <summary>Borderless maximized windows still stop at the taskbar; video full screen covers the actual monitor.</summary>
+    void PlaceOverMonitor()
+    {
+        IntPtr hwnd = new System.Windows.Interop.WindowInteropHelper(this).EnsureHandle();
+        var bounds = System.Windows.Forms.Screen.FromHandle(hwnd).Bounds;
+        // SetWindowPos uses physical pixels, so this also handles monitors with different scaling factors.
+        if (!SetWindowPos(hwnd, new IntPtr(-1) /* HWND_TOPMOST */, bounds.Left, bounds.Top, bounds.Width, bounds.Height,
+                0x0010 | 0x0020 | 0x0040 /* NOACTIVATE, FRAMECHANGED, SHOWWINDOW */))
+            WindowState = WindowState.Maximized;
+    }
+
+    protected override void OnPreviewKeyDown(KeyEventArgs e)
+    {
+        base.OnPreviewKeyDown(e);
+        if (e.Key == Key.F11)
+        {
+            SetFullScreen(!_fullScreen);
+            e.Handled = true;
+        }
+        else if (e.Key == Key.Escape && _fullScreen)
+        {
+            SetFullScreen(false);
+            e.Handled = true;
+        }
+    }
+
     void OnClose(object sender, RoutedEventArgs e) => Close();
 
     protected override void OnStateChanged(EventArgs e)
@@ -144,7 +241,7 @@ public partial class MainWindow : Window
         base.OnStateChanged(e);
         bool max = WindowState == WindowState.Maximized;
         // A maximized custom-chrome window extends past the screen by the resize border; pad it back in.
-        Root.Margin = max ? new Thickness(7) : new Thickness(0);
+        Root.Margin = max && !_fullScreen ? new Thickness(7) : new Thickness(0);
         MaxButton.Content = max ? "" : "";
     }
 
@@ -160,6 +257,9 @@ public partial class MainWindow : Window
 
     [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
     static extern int DwmSetWindowAttribute(IntPtr hwnd, int attribute, ref int value, int size);
+
+    [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
+    static extern bool SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter, int x, int y, int width, int height, uint flags);
 
     /// <summary>Opens the share panel for a clip (the tray's "Share last clip" lands here), on the Clips page.</summary>
     public ShareViewModel ShowShare(string clipPath)

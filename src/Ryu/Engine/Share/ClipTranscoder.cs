@@ -173,7 +173,20 @@ public static unsafe class ClipTranscoder
     internal static void RequireLoaded()
     {
         if (!_loaded)
-            Load(DefaultFolder);
+        {
+            string folder = DefaultFolder;
+            if (!File.Exists(Path.Combine(folder, "avcodec-62.dll"))
+                && string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("Ryu_FFMPEG")))
+            {
+                // Development builds do not ship FFmpeg. Reuse the copy already installed with Ryu, or OBS's
+                // redistributable copy, so opening a clip from the build output works without manual setup.
+                string installedRyu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Ryu", "current");
+                string obs = @"C:\Program Files\obs-studio\bin\64bit";
+                folder = new[] { installedRyu, obs }
+                    .FirstOrDefault(candidate => File.Exists(Path.Combine(candidate, "avcodec-62.dll"))) ?? folder;
+            }
+            Load(folder);
+        }
     }
 
     internal static void TryDelete(string path)

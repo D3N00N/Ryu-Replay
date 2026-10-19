@@ -452,6 +452,8 @@
   "viewer.mute": "Silenciar",
   "viewer.unmute": "Activar sonido",
   "viewer.close": "Cerrar",
+  "fullscreen.enter": "Pantalla completa",
+  "fullscreen.exit": "Salir de pantalla completa",
   "voice.shotPhrase": "Frase de captura",
   "voice.shotNone": "Aún no hay frase de captura",
   "voice.shotNoneTip": "Una segunda frase para capturas, como “captura eso”",
